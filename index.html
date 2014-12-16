@@ -1,0 +1,76 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title></title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+<script>
+$.getJSON('https://static.mwomercs.com/data/cw/mapdata.json', function(data) {
+    $('.timestamp').text(data.generated);
+    $.each(data, function(idx, val) {
+        var tr = $(document.createElement('tr'));
+        
+        tr.addClass('dataRow');
+        
+        if (val.contested == '1')
+        {
+            tr.addClass('danger');
+        }
+        
+        tr.append($(document.createElement('td')).text(idx));
+        tr.append($(document.createElement('td')).text(val.name));
+		tr.append($(document.createElement('td')).text(val.unit.name));	
+		tr.append($(document.createElement('td')).text(val.defense_level));
+        tr.append($(document.createElement('td')).text(val.position.x));
+        tr.append($(document.createElement('td')).text(val.position.y));
+        
+        if (val.owner.name == 'None')
+        {
+            tr.append($(document.createElement('td')).text(val.owner.name));
+        }
+        else
+        {
+            tr.append($(document.createElement('td')).html('<img src="'+val.owner.icon+'" width="16" height="16"> '+val.owner.name));
+        }
+        
+        if (val.invading.name == 'None')
+        {
+            tr.append($(document.createElement('td')).text(val.invading.name));
+        }
+        else
+        {
+            tr.append($(document.createElement('td')).html('<img src="'+val.invading.icon+'" width="16" height="16"> '+val.invading.name));
+        }
+        
+        tr.append($(document.createElement('td')).text(val.contested));
+        $('#data').append(tr);
+        
+    });
+});
+</script>
+
+</head>
+
+<body>
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name <small style="color: #AAA" class="timestamp"></small></th>
+			<th>Unit</th>
+			<th>Defense Level</th>
+            <th>X</th>
+            <th>Y</th>
+            <th>Owner</th>
+            <th>Invader</th>
+            <th>Contested</th>
+        </tr>
+    </thead>
+    <tbody class="table-striped" id="data">
+    </tbody>
+</table>
+</body>
+</html>
